@@ -1,0 +1,50 @@
+{
+  "project_info": {
+    "project_number": "316184379540",
+    "firebase_url": "https://api-project-316184379540.firebaseio.com",
+    "project_id": "api-project-316184379540",
+    "storage_bucket": "api-project-316184379540.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:316184379540:android:d6310225ccc07a04",
+        "android_client_info": {
+          "package_name": "com.traffitruck"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "316184379540-4lbn5q822p7kok6hn1sk1pc1f86rgr0b.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "316184379540-vsh5teajvlafri2m1dcnm68balm21b72.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "316184379540.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXqLVblw7BWqyEMukYOM-7SAflkhXLEd4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
