@@ -9,49 +9,67 @@
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript">
 document.addEventListener("deviceready",onDeviceReady,false);
-function onDeviceReady(){
-	console.log("Device Ready")
-	var push = PushNotification.init( { 
-		"android": {"senderID": "316184379540"},
-		"ios": {"alert": "true", "badge": "true", "sound": "true"}, "windows": {} 
-	} );
 
-	push.on('registration', function(data) {
-		$("#gcm_id").html(data.registrationId);
-		
-//		var f = document.getElementById('TheForm');
-//		f.regid.value = data.registrationId;
-//	    window.open('', 'TheWindow');
-//		f.submit();
+var registration = false;
+var notification = false;
 
+function redirect() {
+	console.log("redirect " + registration + "_" + notification);
+	if ( notification ) {
+		url = $("#notification_url").val();
+		console.log("notification_url " + notification_url);
+		var ref = cordova.InAppBrowser.open(url, '_blank', 'location=no,hardwareback=no')
+		ref.addEventListener('exit', function(event) { navigator.app.exitApp(); });
+	} else if ( registration ) {
+		gcm_id = $("#gcm_id").val();
+		console.log("gcm_id " + gcm_id);
 		var ref = cordova.InAppBrowser.open('http://parsa.co.il/menu', '_blank', 'location=no,hardwareback=no')
 		ref.addEventListener('exit', function(event) { navigator.app.exitApp(); });
-		// TODO open the parsa website if this is not an on.notification() event. Wait for a notification?
-	});
+	}
+}
 
-	push.on('notification', function(data) {
-		console.log("ODED notification");
-		$("#notification_id").html("<a href='" + data.additionalData.url + "'>" + data.additionalData.url + "</a>");
-		// data.title,
-		// data.count,
-		// data.sound,
-		// data.image,
-		// data.additionalData
-	});
+function onDeviceReady(){
 
-	push.on('error', function(e) {
-		console.log(e.message);
-	});
+    if (navigator.connection.type == Connection.NONE) {
+      navigator.notification.alert('An internet connection is required to continue');
+    } else {
+		console.log("Device Ready")
+		var push = PushNotification.init( { 
+			"android": {"senderID": "316184379540"},
+			"ios": {"alert": "true", "badge": "true", "sound": "true"}, "windows": {} 
+		} );
+		
+		// register event handlers
+		push.on('registration', function(data) {
+			console.log("registration")
+			$("#gcm_id").val(data.registrationId);
+			registration = true;
+		});
+
+		push.on('notification', function(data) {
+			console.log("notification")
+			$("#notification_url").val(data.additionalData.url);
+			notification = true;
+			setTimeout(redirect, 500);
+			// data.title,
+			// data.count,
+			// data.sound,
+			// data.image,
+			// data.additionalData
+		});
+
+		push.on('error', function(e) {
+			console.log(e.message);
+		});
+		
+		// wait for events
+		setTimeout(redirect, 1000);
+	}
 }
 </script>
 </head>
 <body>
-	<h1>Push Notification index page</h1>
-	Your GCM ID : <br/>
-	<p id="gcm_id"></p>
-
-	<form id="TheForm" method="post" action="http://parsa.co.il/postlogin" target="TheWindow">
-		<input type="hidden" name="regid" value="" />
-	</form>
+	<input type="hidden" id="gcm_id"></input>
+	<input type="hidden" id="notification_url"></input>
 </body>
 </html>
