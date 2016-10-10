@@ -12,6 +12,9 @@ document.addEventListener("deviceready",onDeviceReady,false);
 
 var registration = false;
 var notification = false;
+var timerHandler;
+
+var urlprefix = "http://parsa.co.il";
 
 function redirect() {
 	console.log("redirect " + registration + "_" + notification);
@@ -23,7 +26,7 @@ function redirect() {
 	} else if ( registration ) {
 		gcm_id = $("#gcm_id").val();
 		console.log("gcm_id " + gcm_id);
-		var ref = cordova.InAppBrowser.open('http://parsa.co.il/menu', '_blank', 'location=no,hardwareback=no')
+		var ref = cordova.InAppBrowser.open(urlprefix + '/postlogin?regid=' + gcm_id, '_blank', 'location=no,hardwareback=no')
 		ref.addEventListener('exit', function(event) { navigator.app.exitApp(); });
 	}
 }
@@ -47,10 +50,11 @@ function onDeviceReady(){
 		});
 
 		push.on('notification', function(data) {
+			clearTimeout(timerHandler);
 			console.log("notification")
 			$("#notification_url").val(data.additionalData.url);
 			notification = true;
-			setTimeout(redirect, 500);
+			redirect();
 			// data.title,
 			// data.count,
 			// data.sound,
@@ -63,7 +67,7 @@ function onDeviceReady(){
 		});
 		
 		// wait for events
-		setTimeout(redirect, 1000);
+		timerHandler = setTimeout(redirect, 1000);
 	}
 }
 </script>
