@@ -26,7 +26,8 @@ function redirect() {
 	} else if ( registration ) {
 		gcm_id = $("#gcm_id").val();
 		console.log("gcm_id " + gcm_id);
-		var ref = cordova.InAppBrowser.open(urlprefix + '/postlogin?regid=' + gcm_id, '_blank', 'location=no,hardwareback=no')
+		var ref = cordova.InAppBrowser.open(urlprefix + '/postlogin?regid=' + gcm_id, '_blank', 'location=no,hardwareback=no,zoom=no,hidden=yes')
+		ref.addEventListener('loadstop', function() { ref.show(); } );
 		ref.addEventListener('exit', function(event) { navigator.app.exitApp(); });
 	}
 }
@@ -76,5 +77,6 @@ function onDeviceReady(){
 	<input type="hidden" id="gcm_id"></input>
 	<input type="hidden" id="notification_url"></input>
 	<img src="img/truck_splash.png" style="max-width: 100%; max-height: 100%;">
+	<img src="img/logo.jpg" style="max-width: 100%; max-height: 100%;">
 </body>
 </html>
